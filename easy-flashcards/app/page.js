@@ -1,15 +1,38 @@
 "use client";
-
-import utilStyles from './Home.module.css';
-import { useState } from "react"
+import React, { useState } from 'react'
+import utilStyles from './page.module.css';
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  function handleSubmit(e) {
-    const form = e.target;
-    const formData = new FormData(form);
-    console.log(formData)
-    //alert(str + " i did it");
+  async function onSubmit(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null)
+
+    const formData = new FormData(e.currentTarget);
+    console.log(formData.get('text'));
+
+  //   try {
+  //     const response = await fetch('/api/submit', {
+  //       method: 'POST',
+  //       body: formData,
+  //     })
+ 
+  //     if (!response.ok) {
+  //       throw new Error('Failed to submit the data. Please try again.')
+  //     }
+ 
+  //     const data = await response.json()
+  //     // ...
+  //   } catch (error) {
+  //     // Capture the error message to display to the user
+  //     setError(error.message)
+  //     console.error(error)
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
   }
 
   return (
@@ -24,20 +47,19 @@ export default function Home() {
         <center>
           <h2>Create your flashcards and get ready to learn!</h2>
         </center>
-          <form method="post" onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <center>
-            <textarea className={utilStyles.textarea}  placeholder={"Enter your text."} onChange={(e) => {
-              //setInputText(e.target.value)
-              //console.log(inputText)
-            }} />
+            <textarea type="text" className={utilStyles.textarea}  placeholder={"Enter your text."} name='text'/>
           </center>
           <center>
-            <button className={utilStyles.button} type="submit" onSubmit={(e) => {
-              txt = getText()
-              console.log(text)
-            }}>Get my flashcards !</button>
+            <button className={utilStyles.button} type="submit" disabled={isLoading}>
+              {isLoading ? 'Loading...' : 'Get my flashcards!'}
+            </button>
           </center>
         </form>
+        <center>
+          {error && <div style={{ color: 'red' }}>{error}</div>}
+        </center>
       </div>
     </>
   );
