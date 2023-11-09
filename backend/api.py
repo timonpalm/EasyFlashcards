@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, Response, send_file
 import langchain
 from langchain.llms import openai
-from backend.config import API_KEY
+from config import API_KEY
 from llm_chain import Chain
 
 app = Flask(__name__)
