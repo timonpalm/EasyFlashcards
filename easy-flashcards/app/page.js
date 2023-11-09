@@ -7,6 +7,15 @@ export default function Home() {
   const [error, setError] = useState(null)
   const [response, setResponse] = useState(null)
 
+  function download(filename, text) {
+    const element = document.createElement("a");
+    const file = new Blob([text], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = filename;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  }
+
   async function onSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
@@ -21,6 +30,8 @@ export default function Home() {
         method: 'POST',
         body: formData,
       })
+
+      // const data = "Juhuu it works!"
  
       if (!response.ok) {
         throw new Error('Failed to submit the data. Please try again.')
@@ -28,6 +39,8 @@ export default function Home() {
  
       const data = await response.json()
       setResponse(data["flashcards"])
+      
+      download("test_download.txt", data["flashcards"])
 
     } catch (error) {
       // Capture the error message to display to the user
