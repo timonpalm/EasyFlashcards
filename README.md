@@ -1,3 +1,5 @@
+# EasyFlashcards
+
 EasyFlashcards is an easy to use web application that creates usable flashcards from a given text. The flashcards are then provided as txt-file that you can import to your local Anki-App and you can start learning!
 
 The project is split up into a python backend part (folder: backend) and a Next.js web interface (easy-flashcards).
