@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+EasyFlashcards is an easy to use web application that creates usable flashcards from a given text. The flashcards are then provided as txt-file that you can import to your local Anki-App and you can start learning!
 
-## Getting Started
+The project is split up into a python backend part (folder: backend) and a Next.js web interface (easy-flashcards).
 
-First, run the development server:
+## Run the Project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+To run the project, you need to setup the backend api and run the web app.
+
+### Backend
+
+Go to ``backend/config.py`` and specify your api tokens:
+
+```python
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = # Your Token
+os.environ["OPENAI_API_KEY"] = # Your Token
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Next, open the project in a terminal and go to the ``backend``-folder. 
+Create a virtual environment and install all the necessary dependencies.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+# create environment
+python3 -m venv .env
+# start environment
+source .env/bin/activate
+# install dependancies
+pip install -r requirements.py
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Now the backend is ready and you can simply run ``python api.py``. The backend api should start on your [http://localhost:5000](http://localhost:5000)
 
-## Learn More
+For a test, you can send an example request:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+curl --request GET \
+  --url 'http://localhost:5000/?key=5HA374PKTeDpEf7HXGNAz4qL9Vg9Ay246T4r25qY&text=A%20flashcard%20or%20flash%20card%20(also%20known%20as%20an%20index%20card)%20is%20a%20card%20bearing%20information%20on%20both%20sides%2C%20which%20is%20intended%20to%20be%20used%20as%20an%20aid%20in%20memorization.'
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Frontend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Got into the directory ``easy-flashcards`` and run ```npm run dev```
 
-## Deploy on Vercel
+Open [http://localhost:5000](http://localhost:5000) with your browser to see the result.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
