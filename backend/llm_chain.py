@@ -2,17 +2,14 @@ import langchain
 from langchain.llms import LlamaCpp, HuggingFaceHub, OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from output_parser import OutputParser
 import os
 
 class Chain():
     def __init__(self):
         self.template = """You are given a text document. Create {num_flashcards} unique flashcards that someone can learn the content of that text document with the flashcards.
 
-Use the following format:
-flashcards:
-    1. [front]: content of frontside [back]: content of backside
-    2. [front]: content of frontside [back]: content of backside
-    3. ...
+{format_instructions}
 
 Create {num_flashcards} unique flashcards!
 
@@ -20,7 +17,12 @@ text: {text}
 
 flashcards:"""
 
-        self.prompt = PromptTemplate(template=self.template, input_variables=["text", "num_flashcards"])
+        parser = OutputParser()
+
+        self.prompt = PromptTemplate(
+            template=self.template, 
+            input_variables=["text", "num_flashcards"], 
+            partial_variables={"format_instructions": parser.get_format_instructions()})
 
         self.llm = OpenAI(
             temperature=0.2,
@@ -37,7 +39,8 @@ flashcards:"""
         self.llm_chain = LLMChain(
             prompt=self.prompt, 
             llm=self.llm, 
-            verbose=True
+            verbose=True,
+            output_parser=parser
             )
     
     def create_flashcards(self, text):

@@ -34,9 +34,12 @@ def get_all_isins_route_get(chain: Chain=CHAIN):
     if text is None:
         return Response("Error 405<br>No text was given.", status=405)
 
-    flashcards = chain.create_flashcards(text)
+    cards = chain.create_flashcards(text)
 
-    return jsonify({"flashcards": flashcards})
+    response = jsonify({"flashcards": cards})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+
+    return response
 
 @app.route("/", methods=["POST"])
 def get_all_isins_route_post(chain: Chain=CHAIN):
@@ -61,9 +64,12 @@ def get_all_isins_route_post(chain: Chain=CHAIN):
     except:
         return Response("Error 405<br>No text was given.", status=405)
 
-    flashcards = chain.create_flashcards(text)
+    cards = chain.create_flashcards(text)
 
-    return jsonify({"flashcards": flashcards})
+    response = jsonify({"flashcards": cards})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+
+    return response
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5000, debug=False)

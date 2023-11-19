@@ -16,6 +16,15 @@ export default function Home() {
     element.click();
   }
 
+  function format_cards(cards) {
+    var text = "";
+
+    for (let i = 0, len = cards.length; i < len; i++) {
+      text += cards[i][0] + ";" + cards[i][1] + "\n";
+    }
+    return text;
+  }
+
   async function onSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
@@ -37,10 +46,13 @@ export default function Home() {
         throw new Error('Failed to submit the data. Please try again.')
       }
  
+      // debugger;
       const data = await response.json()
       setResponse(data["flashcards"])
-      
-      download("test_download.txt", data["flashcards"])
+
+      var cards = format_cards(data["flashcards"])
+
+      download("test_download.txt", cards)
 
     } catch (error) {
       // Capture the error message to display to the user
